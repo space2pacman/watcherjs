@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>watcher.js</title>
+</head>
+<body>
+
+<div id="app">
+	<table border="1" width="50%">
+		<tr>
+			<td colspan="2">Фрукты</td>
+			<td colspan="2">Овощи</td>
+		</tr>
+		<tr>
+			<td>Яблоки</td>
+			<td>Апельсины</td>
+			<td>Морковь</td>
+			<td>Картошка</td>
+		</tr>
+		<tr>
+			<td>{{ eats.fruits.apple }}</td>
+			<td>{{ eats.fruits.orange }}</td>
+			<td>{{ eats.vegetables.carrot }}</td>
+			<td>{{ eats.vegetables.potato }}</td>
+		</tr>
+		<tr>
+			<td>{{ eats.fruits.apple }}</td>
+			<td>{{ eats.fruits.orange }}</td>
+			<td>{{ eats.vegetables.carrot }}</td>
+			<td>{{ eats.vegetables.potato }}</td>
+		</tr>
+		<tr>
+			<td>{{ eats.fruits.apple }}</td>
+			<td>{{ eats.fruits.orange }}</td>
+			<td>{{ eats.vegetables.carrot }}</td>
+			<td>{{ eats.vegetables.potato }}</td>
+		</tr>
+		<tr>
+			<td>Сумма</td>
+			<td>{{ eats.fruits.sum }}</td>
+			<td>Сумма</td>
+			<td>{{ eats.vegetables.sum }}</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="range" oninput="app.eats.fruits.apple = this.value">
+			</td>
+			<td>
+				<input type="range" oninput="app.eats.fruits.orange = this.value">
+			</td>
+			<td>
+				<input type="range" oninput="app.eats.vegetables.carrot = this.value">
+			</td>
+			<td>
+				<input type="range" oninput="app.eats.vegetables.potato = this.value">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="checkbox" oninput="app.eats.fruits.apple = -app.eats.fruits.apple">
+			</td>
+			<td>
+				<input type="checkbox" oninput="app.eats.fruits.orange = -app.eats.fruits.orange">
+			</td>
+			<td>
+				<input type="checkbox" oninput="app.eats.vegetables.carrot = -app.eats.vegetables.carrot">
+			</td>
+			<td>
+				<input type="checkbox" oninput="app.eats.vegetables.potato = -app.eats.vegetables.potato">
+			</td>
+		</tr>
+	</table>
+	<div>
+		<input onclick="this.value = app.eats.fruits.apple">
+		<div>Яблоки: {{ eats.fruits.apple }}</div>
+		<div>Апельсины: {{ eats.fruits.orange }}</div>
+		<div>
+			<div>
+				<div>Еще яблоки: {{ eats.fruits.apple }}</div>
+				<div>{{ eats.fruits.apple }}</div>
+			</div>
+		</div>
+		<div>{{ eats.vegetables.carrot }}</div>
+		<div>{{ eats.vegetables.potato }}</div>
+		<div>bmw - {{ cars.bmw }}</div>
+		<div>audi - {{ cars.audi }}</div>
+		<div>sum - {{ cars.sum }}</div>
+	</div>
+	apple - <input type="range" oninput="app.eats.fruits.apple = this.value"><br>
+	bmw - <input type="range" oninput="app.cars.bmw = this.value"><br>
+	audi - <input type="range" oninput="app.cars.audi = this.value">
+</div>
+
+<script src="js/watcher.js"></script>
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			eats: {
+				fruits: {
+					apple: 10,
+					orange: 20,
+					sum: 0
+				},
+				vegetables: {
+					carrot: 30,
+					potato: 40,
+					sum: 0
+				}
+			},
+			//numbers: [1,2,3,4,5],
+			cars: {
+				bmw: 40,
+				audi: 50,
+				sum: 0
+			}
+		},
+		watch: {
+			bmw: function() {
+				this.cars.sum = Number(this.cars.bmw) + Number(this.cars.audi);
+			},
+			apple: function() {
+				this.eats.fruits.sum = Number(this.eats.fruits.apple) + Number(this.eats.fruits.orange);
+			},
+			orange: function() {
+				this.eats.fruits.sum = Number(this.eats.fruits.apple) + Number(this.eats.fruits.orange);
+			},
+			carrot: function() {
+				this.eats.vegetables.sum = Number(this.eats.vegetables.carrot) + Number(this.eats.vegetables.potato);
+			}
+		}
+	})
+</script>
+
+</body>
+</html>
