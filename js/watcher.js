@@ -40,7 +40,7 @@ function Watcher(options) {
 		}
 	}
 
-	function replace(item) {
+	function render(item) {
 		var nodes = el;
 		var copyCache = cache;
 		var chain;
@@ -57,7 +57,7 @@ function Watcher(options) {
 				if(changeCheck(keywords[i])) {
 					getResultAndAdd(keywords[i]);
 					runWatchProp(keywords[i]);
-					replace(keywords[i]);
+					render(keywords[i]);
 				}
 				if(item && keywords[i] == item) {
 					getResultAndAdd(keywords[i]);
@@ -72,7 +72,7 @@ function Watcher(options) {
 
 		function getResultAndAdd(chain) {
 			result = eval("options.data." + chain);
-			nodes.nodeValue = copyCache.nodeValue.replace(brackets[0] + " " + chain + " " + brackets[1], result.toString());
+			nodes.nodeValue = copyCache.nodeValue.render(brackets[0] + " " + chain + " " + brackets[1], result.toString());
 		}
 
 		function create(chain) {
@@ -89,7 +89,7 @@ function Watcher(options) {
 		function changeCheck(chain) {
 			var props = chain.split(".");
 			var lastProp = props[props.length - 1];
-			
+
 			props = props.slice(0,-1).join(".");
 			if(eval("options.data." + props + "._" + lastProp + ".change")) {
 				eval("options.data." + props + "._" + lastProp + ".change = false");
@@ -150,15 +150,11 @@ function Watcher(options) {
 		}
 	}
 
-	function render() {
-		replace();
-	}
-
 	function init() {
 		findNode(cache.childNodes);
 		propertiesModification(options.data);
 		runComputedProp.call(self, options.computed);
-		replace();
+		render();
 		created = true;
 	}
 
