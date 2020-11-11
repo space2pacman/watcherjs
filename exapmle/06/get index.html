@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>get index</title>
+</head>
+<body>
+	
+<div id="app">
+	<div>{{ getIndex }}</div>
+	<div>{{ getIndex }}</div>
+	<div>{{ getIndex }}</div>
+</div>
+
+<script src="watcher.js"></script>
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			array: ["apple", "orange", "plum"],
+			getIndex: function index() {
+				if(!index.count) index.count = 0;
+				
+
+				return this.array[index.count++];
+			}
+		}
+	})
+</script>	
+</body>
+</html>

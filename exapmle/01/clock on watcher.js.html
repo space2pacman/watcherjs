@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock on watcher.js</title>
+</head>
+<body>
+
+<div id="app">
+	<span>{{ clock.hours }}</span>:<span>{{ clock.minutes }}</span>:<span>{{ clock.seconds }}</span>
+</div>
+
+<script src="watcher.js"></script>	
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			clock: {
+				hours: 0,
+				minutes: 0,
+				seconds: 0
+			}
+		},
+		computed: {
+			runClock: function() {
+				var self = this;
+				
+				setInterval(function() {
+					var date = new Date;
+					
+					self.clock.hours = date.getHours();
+					self.clock.minutes = date.getMinutes();
+					self.clock.seconds = date.getSeconds();
+				}, 1000)
+			}
+		}
+	})	
+</script>
+</body>
+</html>

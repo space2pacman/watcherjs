@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>slider on watcher.js</title>
+</head>
+<body>
+
+<style>
+	.color {
+		width: 100px;
+		height: 100px;
+		border: 1px solid;
+	}
+</style>
+
+<div id="app">
+	<input type="range" min="0" max="255" oninput="app.range.r = this.value" value="{{ range.r }}"> - R<br>
+	<input type="range" min="0" max="255" oninput="app.range.g = this.value" value="{{ range.g }}"> - G<br>
+	<input type="range" min="0" max="255" oninput="app.range.b = this.value" value="{{ range.b }}"> - B<br>
+	<div class="color" styles="background: {{ range.color }}"></div>
+</div>
+
+<script src="watcher.js"></script>	
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			range: {
+				r: 0,
+				g: 0,
+				b: 0,
+				color: ""
+			}
+		},
+		watch: {
+			r: getColor,
+			g: getColor,
+			b: getColor,
+		},
+		computed: {
+			color: getColor
+		}
+	})
+
+	function getColor() {
+		this.range.color = "rgb(" + this.range.r + ", " + this.range.g + ", " + this.range.b + ")";
+	}
+</script>
+</body>
+</html>

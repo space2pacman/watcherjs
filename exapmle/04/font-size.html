@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>slider on watcher.js</title>
+</head>
+<body>
+
+<div id="app">
+	<div style="color: green;" styles="font-size: {{ font.size }}px">Hello from watcher.js</div>
+	<br>
+	Font size: <input type="range" value="{{ font.size }}" oninput="app.font.size = this.value"> {{ font.size }}
+</div>
+
+<script src="watcher.js"></script>	
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			font: {
+				size: 16
+			}
+		}
+	})	
+</script>
+</body>
+</html>

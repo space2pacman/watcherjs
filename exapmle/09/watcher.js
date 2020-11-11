@@ -5,13 +5,11 @@ function Watcher(options) {
 	var regexp = new RegExp("(?<=" + brackets[0] + ")(.*)(?=" + brackets[1] + ")");
 	var keywords = {
 		values: [],
-		attrs: [],
-		for: []
+		attrs: []
 	};
 	var paths = {
 		values: [],
-		attrs: [],
-		for: []
+		attrs: []
 	};
 	var self = this;
 	var created = false;
@@ -34,13 +32,6 @@ function Watcher(options) {
 						findIndex(nodes[i], nodes, "attrs");
 						keywords.attrs.push(nodes[i].attributes[j].nodeValue.match(regexp)[0].trim());
 					}
-					/////////////////////////////////
-					// find watch-for
-					if(nodes[i].attributes[j].nodeName == "watch-for") {
-						findIndex(nodes[i], nodes, "for");
-						keywords.for.push(nodes[i].attributes[j].nodeValue);
-					}
-					////////////////////////////////
 				}
 			}
 		}
@@ -81,7 +72,6 @@ function Watcher(options) {
 					nodes = nodes.childNodes[paths.values[i][j]];
 					copyCache = copyCache.childNodes[paths.values[i][j]];
 				}
-
 				chain = copyCache.nodeValue.match(regexp)[0].trim();
 
 				if(created) {
@@ -136,78 +126,13 @@ function Watcher(options) {
 				copyCache = cache;
 			}
 		}
-//////////////////////////////////
-		function replaceWatchFor() {
-			var data = {};
-			var storage;
-			var fragment = document.createDocumentFragment();
-			nodes = el;
-			copyCache = cache;
 
-			for(var i = 0; i < paths.for.length; i++) {
-				for(var j = 0; j < paths.for[i].length; j++) {
-					nodes = nodes.childNodes[paths.for[i][j]];
-					copyCache = copyCache.childNodes[paths.for[i][j]];
-				}
-
-				for(var k = 0; k < copyCache.attributes.length; k++) {
-					if(copyCache.attributes[k].nodeName == "watch-for") {
-						storage = copyCache.attributes[k].nodeValue.split(" in ")
-						data.variable = storage[0];
-						data.array = storage[1];
-						data.nodeName = copyCache.nodeName;
-
-						self[data.array].forEach(function(item) {
-							data.el = document.createElement(data.nodeName);
-							data.el.innerHTML = item;
-							
-							for(var indexAttr = 0; indexAttr < copyCache.attributes.length; indexAttr++) {
-								if(copyCache.attributes[indexAttr].nodeName != "watch-for") {
-									data.el[copyCache.attributes[indexAttr].nodeName] = copyCache.attributes[indexAttr].nodeValue;
-									data.el.setAttribute(copyCache.attributes[indexAttr].nodeName, copyCache.attributes[indexAttr].nodeValue)
-								}
-							}
-
-							fragment.append(data.el)
-
-						})
-
-						copyCache.replaceWith(fragment);
-
-					}
-				}
-				nodes = el;
-				copyCache = cache;	
-			}
-			////////// RESET
-			if(!created) {
-				el.replaceWith(copyCache);
-				el = copyCache;
-				cache = el.cloneNode(true);
-				keywords = {
-					values: [],
-					attrs: [],
-					for: []
-				};
-				paths = {
-					values: [],
-					attrs: [],
-					for: []
-				};
-				delete findIndex.attrs;
-				delete findIndex.values;
-				delete findIndex.for;
-				///////////////////////////
-				findNode(cache.childNodes);
-			}
-		}
-///////////////////////////////
 		function getResultAndAdd(chain, attr) {
 			result = eval("self." + chain);
 			var prop;
 
 			if(attr) {
-				result = attr.nodeValue.replace(brackets[0] + " " + chain + " " + brackets[1], typeof result == "function" ? result.call(self) : result === null ? "#" : result.toString());
+				result = attr.nodeValue.replace(brackets[0] + " " + chain + " " + brackets[1], typeof result == "function" ? result.call(self) : result.toString());
 				if(attr.nodeName.includes("watch:")) {
 					prop = attr.nodeName.split(":")[1];
 
@@ -231,7 +156,7 @@ function Watcher(options) {
 					nodes.removeAttribute(attr.nodeName);
 				}
 			} else {
-				nodes.nodeValue = copyCache.nodeValue.replace(brackets[0] + " " + chain + " " + brackets[1], typeof result == "function" ? result.call(self) : result === null ? "#" : result.toString());
+				nodes.nodeValue = copyCache.nodeValue.replace(brackets[0] + " " + chain + " " + brackets[1], typeof result == "function" ? result.call(self) : result.toString());
 			}
 		}
 
@@ -251,7 +176,6 @@ function Watcher(options) {
 		}
 
 		function replaceInit() {
-			replaceWatchFor();
 			replaceValue();
 			replaceAttrs();
 		}

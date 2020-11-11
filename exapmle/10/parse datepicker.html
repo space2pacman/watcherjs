@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Parse datepicker</title>
+</head>
+<body>
+
+<style>
+
+</style>
+
+<div id="app">
+	<input type="date" oninput="app.date.value = this.value.split('-')">
+	<br>
+	<span>Дата: {{ date.day }}</span>
+	<span>{{ date.mounth }}</span>
+	<span>{{ date.year }}</span>
+</div>
+
+<script src="watcher.js"></script>
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			date: {
+				value: 0,
+				day: 0,
+				mounth: 0,
+				year:  0,
+				mounths: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+			}
+		},
+		watch: {
+			value: function() {
+				this.date.day = Number(this.date.value[2]);	
+				this.date.mounth = this.date.mounths[Number(this.date.value[1]) - 1];	
+				this.date.year = this.date.value[0];	
+			}
+		}
+	})
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Filereader</title>
+</head>
+<body>
+
+<style>
+	img {
+		width: 200px;
+	}
+
+	img[src="#"] {
+   		display: none;
+	}
+</style>
+
+<div id="app">
+	<input type="file" onchange="app.image.files = this.files">
+	<br>
+	<img watch:src="{{ image.src }}">
+</div>
+
+<script src="watcher.js"></script>
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			image: {
+				files: 0,
+				src: null
+			}
+		},
+		watch: {
+			files: function() {
+				var fs = new FileReader;
+				
+				fs.readAsDataURL(this.image.files[0]);
+
+				fs.onload = () => this.image.src = fs.result;
+			}
+		}
+	})
+</script>
+</body>
+</html>

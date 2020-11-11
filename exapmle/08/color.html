@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Circle second</title>
+</head>
+<body>
+	
+<style>
+	.block {
+		width: 100px;
+		height: 100px;
+		border: 1px solid;
+	}
+
+	input {
+		width: 100px;
+	}
+</style>
+
+<div id="app">
+	<div class="block" watch:style="background: {{ color }}"></div>
+	<input type="text" watch:value="{{ color }}" oninput="app.color = this.value">
+</div>
+
+<script src="watcher.js"></script>
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			color: "white"
+		}
+	})
+</script>
+</body>
+</html>

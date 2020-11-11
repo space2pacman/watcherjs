@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clock on watcher.js</title>
+</head>
+<body>
+
+<div id="app">
+	<input type="text" placeholder="Number A" onchange="app.calc.a = this.value">
+	<input type="text" placeholder="Number B" onchange="app.calc.b = this.value">
+	<div>Result: A + B = {{ calc.result }}</div>
+	<button onclick="app.calc.result = Number(app.calc.a) + Number(app.calc.b)">calc</button>
+</div>
+
+<script src="watcher.js"></script>	
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			calc: {
+				a: 0,
+				b: 0,
+				result: 0
+			}
+		}
+	})	
+</script>
+</body>
+</html>

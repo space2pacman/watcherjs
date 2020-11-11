@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>slider on watcher.js</title>
+</head>
+<body>
+
+<div id="app">
+	<img watch:src="{{ image.path }}">
+	<br>
+	<button onclick="app.image.index--;">Prev</button>
+	<button onclick="app.image.index++;">Next</button>
+</div>
+
+<script src="watcher.js"></script>	
+<script>
+	var app = new Watcher({
+		el: "#app",
+		data: {
+			image: {
+				path: "1.jpg",
+				paths: ["1.jpg", "2.jpg", "3.jpg"],
+				index: 0
+			}
+		},
+		watch: {
+			index: function() {
+				if(this.image.index >= this.image.paths.length) {
+					this.image.index = this.image.paths.length - 1
+				}
+				if(this.image.index < 0) {
+					this.image.index = 0
+				}
+
+				this.image.path = this.image.paths[this.image.index]
+			}
+		}
+	})	
+</script>
+</body>
+</html>

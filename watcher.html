@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>watcher.js</title>
+	<title>Watcher.js</title>
 </head>
 <body>
 
 <div id="app">
 	<table border="1" width="50%">
 		<tr>
-			<td colspan="2">Фрукты</td>
-			<td colspan="2">Овощи</td>
+			<td colspan="2">{{ fruits }}</td>
+			<td colspan="2">{{ vegetables }}</td>
 		</tr>
 		<tr>
 			<td>Яблоки</td>
@@ -72,9 +72,32 @@
 		</tr>
 	</table>
 	<div>
-		<input onclick="this.value = app.eats.fruits.apple">
-		<div>Яблоки: {{ eats.fruits.apple }}</div>
-		<div>Апельсины: {{ eats.fruits.orange }}</div>
+		<div>
+			<div>
+				<div watch:apple="{{ eats.fruits.apple }}" watch:orange="{{ eats.fruits.orange }}">Prop</div>
+				<div watch:apple="{{ eats.fruits.apple }}" watch:orange="{{ eats.fruits.orange }}">Prop</div>
+				<div watch:apple="{{ eats.fruits.apple }}" watch:orange="{{ eats.fruits.orange }}">Prop</div>
+			</div>
+			<hr>
+			<div watch-for="item in alarm" class="block item red" alt="kek" data-lel="kek">item</div>
+			<hr>
+		</div>
+		<hr>
+		<div watch-for="item in alarm" class="block item red" alt="kek" data-lel="kek">item</div>
+		<hr>
+		<div>{{ alarm }}</div>
+		<div>{{ deep.array.in.obj }}</div>
+		<div>index: {{ getIndex }}</div>
+		<div>index: {{ getIndex }}</div>
+		<div>index: {{ getIndex }}</div>
+		<div>getSumAppleAndOrange: {{ getSumAppleAndOrange }}</div>
+		<input watch:value="{{ eats.fruits.apple }}">
+		<input watch:value="{{ eats.fruits.apple }}">
+		<input watch:value="100 {{ eats.fruits.plum }}">
+		range apple - <input type="range" watch:value="{{ eats.fruits.apple }}">
+		range plum - <input type="range" oninput="app.eats.fruits.plum = this.value">
+		<div watch:style="font-size: {{ eats.fruits.apple }}px">Яблоки: {{ eats.fruits.apple }}</div>
+		<div style="color: orange;" watch:style="font-size: {{ eats.fruits.orange }}px">Апельсины: {{ eats.fruits.orange }}</div>
 		<div>
 			<div>
 				<div>Еще яблоки: {{ eats.fruits.apple }}</div>
@@ -97,10 +120,29 @@
 	var app = new Watcher({
 		el: "#app",
 		data: {
+			fruits: "Фрукты",
+			getIndex: function index() {
+				if(!index.count) index.count = 0;
+
+				return ++index.count;
+			},
+			getSumAppleAndOrange: function() {
+				return this.eats.fruits.apple + this.eats.fruits.orange;
+			},
+			alarm: ["Не", "ну", "это", "надо", "как-то", "исправлять"],
+			deep: {
+				array: {
+					in: {
+						obj: ["maximum", "deep"]
+					}
+				}
+			},
+			vegetables: "Овощи",
 			eats: {
 				fruits: {
 					apple: 10,
 					orange: 20,
+					plum: 30,
 					sum: 0
 				},
 				vegetables: {
@@ -128,6 +170,9 @@
 			},
 			carrot: function() {
 				this.eats.vegetables.sum = Number(this.eats.vegetables.carrot) + Number(this.eats.vegetables.potato);
+			},
+			alarm: function() {
+				console.log("array has change")
 			}
 		}
 	})
